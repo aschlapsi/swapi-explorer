@@ -21,11 +21,13 @@ def display_file_data(request, file_id):
         count = 10
     data_file = get_object_or_404(CollectionFile, pk=file_id)
     table_output = petl.MemorySource()
-    data_file.get_table().head(count).tohtml(table_output)
+    table = data_file.get_table()
+    table.head(count).tohtml(table_output)
     return render(request, 'swcollections/file_data.html', {
         'next_count': count + 10,
         'filename': data_file.file_name(),
         'filedata': table_output.getvalue().decode('utf-8'),
+        'can_load_more': count < table.nrows(),
     })
 
 

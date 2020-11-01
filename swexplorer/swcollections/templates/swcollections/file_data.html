@@ -6,6 +6,8 @@
     <input type="hidden" name="next_count" value="{{ next_count }}">
     <h1>{{ filename }}</h1>
     {{ filedata|safe }}
-    <input type="submit" value="Load more">
+    {% if can_load_more %}
+        <input type="submit" value="Load more">
+    {% endif %}
 </form>
 {% endblock %}

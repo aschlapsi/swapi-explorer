@@ -3,11 +3,32 @@ import requests
 from functools import lru_cache
 
 
-@lru_cache
+class PlanetCache:
+    def __init__(self):
+        self._cache = None
+
+    def get_planet(self, resource):
+        if self._cache is None:
+            self._cache = dict(
+                (planet['url'], planet['name'])
+                for planet
+                in get_all_from('https://swapi.dev/api/planets/')
+            )
+        return self._cache[resource]
+
+
+PLANET_CACHE = PlanetCache()
+
+
 def get_homeworld_name(resource):
-    response = requests.get(resource)
-    data = response.json()
-    return data['name']
+    return PLANET_CACHE.get_planet(resource)
+
+
+# @lru_cache
+# def get_homeworld_name(resource):
+#     response = requests.get(resource)
+#     data = response.json()
+#     return data['name']
 
 
 def get_all_from(url):

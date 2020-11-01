@@ -1,2 +1,3 @@
 petl
 requests
+django >= 2.*, < 3

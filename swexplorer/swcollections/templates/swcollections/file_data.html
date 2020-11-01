@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h1>{{ filename }}</h1>
 <form method="POST" action="">
     {% csrf_token %}
     <input type="hidden" name="next_count" value="{{ next_count }}">
-    <h1>{{ filename }}</h1>
     {{ filedata|safe }}
     {% if can_load_more %}
         <input type="submit" value="Load more">

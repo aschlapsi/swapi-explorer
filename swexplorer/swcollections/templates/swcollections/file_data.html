@@ -2,6 +2,7 @@
 
 {% block content %}
 <h1>{{ filename }}</h1>
+<a href="{% url 'analyze-file-data' file.id %}">Analyze</a>
 <form method="POST" action="">
     {% csrf_token %}
     <input type="hidden" name="next_count" value="{{ next_count }}">

@@ -6,7 +6,7 @@
         <h1>Collections <input type="submit" value="Fetch"></h1>
         <ul>
         {% for file in collection_files %}
-            <li><a href="#">{{ file.last_modified|date }} {{ file.last_modified|time }}</a></li>
+            <li><a href="{% url 'file-data' file.id %}">{{ file.last_modified|date }} {{ file.last_modified|time }}</a></li>
         {% endfor %}
         </ul>
     </form>

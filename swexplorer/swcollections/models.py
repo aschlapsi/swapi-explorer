@@ -1,4 +1,5 @@
 import uuid
+import petl
 from pathlib import Path
 from django.conf import settings
 from django.conf import settings
@@ -23,6 +24,12 @@ def fetch_characters():
 class CollectionFile(models.Model):
     csv_file_path = models.FilePathField(path=settings.LOCAL_FILE_DIR, match=r'.*\.csv')
     last_modified = models.DateTimeField(auto_now=True)
+
+    def file_name(self):
+        return Path(self.csv_file_path).name
+
+    def get_table(self):
+        return petl.fromcsv(self.csv_file_path)
 
     def __str__(self):
         return self.csv_file_path

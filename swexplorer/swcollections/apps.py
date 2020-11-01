@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class SwcollectionsConfig(AppConfig):
+class SwCollectionsConfig(AppConfig):
     name = 'swcollections'

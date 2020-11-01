@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="POST" action="">
+    <input type="hidden" name="active" value="{{ active_headers|join:',' }}">
+    {% csrf_token %}
+    <h1>{{ filename }}</h1>
+    {% for header in headers %}
+        <input
+            type="submit"
+            name="activate"
+            value="{{ header }}"
+            {% if header in active_headers %}class="active"{% endif %}
+        >
+    {% endfor %}
+    
+    {{ filedata|safe }}
+</form>
+{% endblock %}

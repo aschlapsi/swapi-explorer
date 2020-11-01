@@ -14,7 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import include, path
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('collections/', include('swcollections.urls')),
+    path('', RedirectView.as_view(pattern_name='file-list'))
 ]

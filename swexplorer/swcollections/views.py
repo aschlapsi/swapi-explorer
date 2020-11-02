@@ -19,15 +19,17 @@ def display_file_data(request, file_id):
         count = int(request.POST.get('next_count', 10))
     else:
         count = 10
+
     data_file = get_object_or_404(CollectionFile, pk=file_id)
-    table_output = petl.MemorySource()
     table = data_file.get_table()
-    table.head(count).tohtml(table_output)
+    head_of_table = table.head(count)
+    table_html = _convert_to_html(head_of_table)
+
     return render(request, 'swcollections/file_data.html', {
         'next_count': count + 10,
         'file': data_file,
         'filename': data_file.file_name(),
-        'filedata': table_output.getvalue().decode('utf-8'),
+        'filedata': table_html,
         'can_load_more': count < table.nrows(),
     })
 
@@ -46,22 +48,25 @@ def analyze_file_data(request, file_id):
             active_headers.append(header_to_activate)
 
     table = data_file.get_table()
-    headers = table.fieldnames()
 
     if len(active_headers) > 0:
         key = active_headers
         if len(key) == 1:
             key = active_headers[0]
-        table_output = petl.MemorySource()
-        table.aggregate(key=key, aggregation=len).tohtml(table_output)
-        table_html = table_output.getvalue().decode('utf-8')
+        table_html = _convert_to_html(table.aggregate(key=key, aggregation=len))
     else:
         table_html = ''
 
     return render(request, 'swcollections/analyze_file_data.html', {
-        'headers': headers,
+        'headers': table.fieldnames(),
         'active_headers': active_headers,
         'file': data_file,
         'filename': data_file.file_name(),
         'filedata': table_html,
     })
+
+
+def _convert_to_html(table):
+    table_output = petl.MemorySource()
+    table.tohtml(table_output)
+    return table_output.getvalue().decode('utf-8')
